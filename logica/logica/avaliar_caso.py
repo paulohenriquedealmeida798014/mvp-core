@@ -26,12 +26,11 @@ def avaliar_caso(dados_avaliacao):
         resultado["alertas"].append("Paciente com idade acima de 60 anos. Avaliar com cautela.")
 
 
+       if len(resultado["alertas"]) > 0:
+        resultado["texto_base"] = "Avaliação concluída com alertas. Verifique os pontos de atenção."
+    else:
+        resultado["texto_base"] = "Avaliação concluída sem alertas."
 
-    # TODO: outras validações obrigatórias
-    # TODO: critérios de exclusão
-    # TODO: gerar alertas
-    # TODO: montar texto base
-
-    resultado["texto_base"] = "Avaliação básica concluída com sucesso."
+    
 
     return resultado
