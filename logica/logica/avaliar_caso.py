@@ -21,6 +21,11 @@ def avaliar_caso(dados_avaliacao):
         resultado["bloqueios"].append("Idade menor que 18 anos não permitida.")
         return resultado
 
+        # Regra 3: alerta simples - idade maior que 60 anos
+    if dados_avaliacao.get("idade") > 60:
+        resultado["alertas"].append("Paciente com idade acima de 60 anos. Avaliar com cautela.")
+
+
 
     # TODO: outras validações obrigatórias
     # TODO: critérios de exclusão
