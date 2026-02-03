@@ -1,1 +1,24 @@
+# Função Central de Avaliação de Caso
+# Versão inicial (esqueleto)
+
+ENTRADA:
+- dadosAvaliacao (objeto com respostas do formulário)
+
+PROCESSAMENTO:
+- Validar campos obrigatórios
+- Aplicar critérios de exclusão
+- Gerar alertas
+- Montar texto base
+
+SAÍDA:
+- status: "ok" ou "bloqueado"
+- alertas: lista
+- bloqueios: lista
+- textoBase: texto estruturado
+
+OBSERVAÇÕES:
+- Esta função NÃO usa IA
+- Esta função NÃO acessa banco de dados
+- Esta função NÃO depende de interface
+- Esta função deve ser 100% determinística
 
