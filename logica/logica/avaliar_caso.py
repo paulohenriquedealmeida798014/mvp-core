@@ -1,6 +1,13 @@
 # Função central de avaliação de caso
 # Versão inicial com primeira regra simples
 
+def validar_idade_obrigatoria(dados_avaliacao, resultado):
+    if "idade" not in dados_avaliacao:
+        resultado["status"] = "bloqueado"
+        resultado["bloqueios"].append("Campo obrigatório 'idade' não informado.")
+        return False
+    return True
+
 def avaliar_caso(dados_avaliacao):
     resultado = {
         "status": "ok",
@@ -9,10 +16,7 @@ def avaliar_caso(dados_avaliacao):
         "texto_base": ""
     }
 
-    # Regra 1: campo obrigatório "idade"
-    if "idade" not in dados_avaliacao:
-        resultado["status"] = "bloqueado"
-        resultado["bloqueios"].append("Campo obrigatório 'idade' não informado.")
+   if not validar_idade_obrigatoria(dados_avaliacao, resultado):
         return resultado
 
         # Regra 2: critério de exclusão simples - menor de 18 anos
