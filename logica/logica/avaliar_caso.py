@@ -1,7 +1,7 @@
 # Função central de avaliação de caso
-# Versão inicial com regras básicas separadas + códigos e mensagens via catálogo
+# Pipeline extensível de regras + códigos e mensagens via catálogo
 
-from typing import Dict, Any
+from typing import Dict, Any, Callable, List
 from .codigos import (
     IDADE_OBRIGATORIA_AUSENTE,
     IDADE_TIPO_INVALIDO,
@@ -23,6 +23,7 @@ VERSAO_PROTOCOLO = "1.0.0"
 
 Resultado = Dict[str, Any]
 Entrada = Dict[str, Any]
+Regra = Callable[[Entrada, Resultado], bool]
 
 
 def validar_idade_obrigatoria(dados_avaliacao: Entrada, resultado: Resultado) -> bool:
@@ -67,15 +68,25 @@ def aplicar_exclusao_idade_minima(dados_avaliacao: Entrada, resultado: Resultado
     return True
 
 
-def aplicar_alerta_idade_alta(dados_avaliacao: Entrada, resultado: Resultado) -> None:
+def aplicar_alerta_idade_alta(dados_avaliacao: Entrada, resultado: Resultado) -> bool:
     """Gera alerta se 'idade' for maior que 60."""
     if dados_avaliacao.get("idade") > 60:
         resultado["alertas"].append(MSG_ALERTA_IDADE_ACIMA_60)
         resultado["codigos_alerta"].append(IDADE_ACIMA_60)
+    return True
+
+
+PIPELINE_REGRAS: List[Regra] = [
+    validar_idade_obrigatoria,
+    validar_tipo_idade,
+    validar_faixa_idade,
+    aplicar_exclusao_idade_minima,
+    aplicar_alerta_idade_alta,
+]
 
 
 def avaliar_caso(dados_avaliacao: Entrada) -> Resultado:
-    """Orquestra a avaliação aplicando validações, exclusões e alertas."""
+    """Orquestra a avaliação aplicando o pipeline de regras."""
     resultado: Resultado = {
         "versao_protocolo": VERSAO_PROTOCOLO,
         "status": "ok",
@@ -86,26 +97,11 @@ def avaliar_caso(dados_avaliacao: Entrada) -> Resultado:
         "texto_base": ""
     }
 
-    # Validação obrigatória
-    if not validar_idade_obrigatoria(dados_avaliacao, resultado):
-        return resultado
+    for regra in PIPELINE_REGRAS:
+        ok = regra(dados_avaliacao, resultado)
+        if not ok:
+            return resultado
 
-    # Validação de tipo
-    if not validar_tipo_idade(dados_avaliacao, resultado):
-        return resultado
-
-    # Validação de faixa
-    if not validar_faixa_idade(dados_avaliacao, resultado):
-        return resultado
-
-    # Regra de exclusão
-    if not aplicar_exclusao_idade_minima(dados_avaliacao, resultado):
-        return resultado
-
-    # Aplicar alertas
-    aplicar_alerta_idade_alta(dados_avaliacao, resultado)
-
-    # Texto final baseado em alertas
     if resultado["alertas"]:
         resultado["texto_base"] = MSG_TEXTO_BASE_ALERTAS
     else:
