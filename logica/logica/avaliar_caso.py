@@ -1,6 +1,7 @@
 # Função central de avaliação de caso
 # Versão inicial com regras básicas separadas + códigos estruturados via catálogo
 
+from typing import Dict, Any
 from .codigos import (
     IDADE_OBRIGATORIA_AUSENTE,
     IDADE_TIPO_INVALIDO,
@@ -11,7 +12,12 @@ from .codigos import (
 
 VERSAO_PROTOCOLO = "1.0.0"
 
-def validar_idade_obrigatoria(dados_avaliacao, resultado):
+Resultado = Dict[str, Any]
+Entrada = Dict[str, Any]
+
+
+def validar_idade_obrigatoria(dados_avaliacao: Entrada, resultado: Resultado) -> bool:
+    """Bloqueia se o campo 'idade' não estiver presente."""
     if "idade" not in dados_avaliacao:
         resultado["status"] = "bloqueado"
         resultado["bloqueios"].append("Campo obrigatório 'idade' não informado.")
@@ -20,7 +26,8 @@ def validar_idade_obrigatoria(dados_avaliacao, resultado):
     return True
 
 
-def validar_tipo_idade(dados_avaliacao, resultado):
+def validar_tipo_idade(dados_avaliacao: Entrada, resultado: Resultado) -> bool:
+    """Bloqueia se 'idade' não for numérico."""
     idade = dados_avaliacao.get("idade")
     if not isinstance(idade, (int, float)):
         resultado["status"] = "bloqueado"
@@ -30,7 +37,8 @@ def validar_tipo_idade(dados_avaliacao, resultado):
     return True
 
 
-def validar_faixa_idade(dados_avaliacao, resultado):
+def validar_faixa_idade(dados_avaliacao: Entrada, resultado: Resultado) -> bool:
+    """Bloqueia se 'idade' estiver fora da faixa 0–120."""
     idade = dados_avaliacao.get("idade")
     if idade < 0 or idade > 120:
         resultado["status"] = "bloqueado"
@@ -40,7 +48,8 @@ def validar_faixa_idade(dados_avaliacao, resultado):
     return True
 
 
-def aplicar_exclusao_idade_minima(dados_avaliacao, resultado):
+def aplicar_exclusao_idade_minima(dados_avaliacao: Entrada, resultado: Resultado) -> bool:
+    """Bloqueia se 'idade' for menor que 18."""
     if dados_avaliacao.get("idade") < 18:
         resultado["status"] = "bloqueado"
         resultado["bloqueios"].append("Idade menor que 18 anos não permitida.")
@@ -49,7 +58,8 @@ def aplicar_exclusao_idade_minima(dados_avaliacao, resultado):
     return True
 
 
-def aplicar_alerta_idade_alta(dados_avaliacao, resultado):
+def aplicar_alerta_idade_alta(dados_avaliacao: Entrada, resultado: Resultado) -> None:
+    """Gera alerta se 'idade' for maior que 60."""
     if dados_avaliacao.get("idade") > 60:
         resultado["alertas"].append(
             "Paciente com idade acima de 60 anos. Avaliar com cautela."
@@ -57,8 +67,9 @@ def aplicar_alerta_idade_alta(dados_avaliacao, resultado):
         resultado["codigos_alerta"].append(IDADE_ACIMA_60)
 
 
-def avaliar_caso(dados_avaliacao):
-    resultado = {
+def avaliar_caso(dados_avaliacao: Entrada) -> Resultado:
+    """Orquestra a avaliação aplicando validações, exclusões e alertas."""
+    resultado: Resultado = {
         "versao_protocolo": VERSAO_PROTOCOLO,
         "status": "ok",
         "alertas": [],
