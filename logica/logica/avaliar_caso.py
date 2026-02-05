@@ -10,6 +10,10 @@ def validar_idade_obrigatoria(dados_avaliacao, resultado):
 
 
 def aplicar_exclusao_idade_minima(dados_avaliacao, resultado):
+    def aplicar_alerta_idade_alta(dados_avaliacao, resultado):
+    if dados_avaliacao.get("idade") > 60:
+        resultado["alertas"].append("Paciente com idade acima de 60 anos. Avaliar com cautela.")
+
     if dados_avaliacao.get("idade") < 18:
         resultado["status"] = "bloqueado"
         resultado["bloqueios"].append("Idade menor que 18 anos não permitida.")
@@ -33,9 +37,9 @@ def avaliar_caso(dados_avaliacao):
     if not aplicar_exclusao_idade_minima(dados_avaliacao, resultado):
         return resultado
 
-    # Regra 3: alerta simples - idade maior que 60 anos
-    if dados_avaliacao.get("idade") > 60:
-        resultado["alertas"].append("Paciente com idade acima de 60 anos. Avaliar com cautela.")
+       # Aplicar alertas
+    aplicar_alerta_idade_alta(dados_avaliacao, resultado)
+
 
     # Texto final baseado em alertas
     if len(resultado["alertas"]) > 0:
