@@ -44,6 +44,7 @@ def aplicar_alerta_idade_alta(dados_avaliacao, resultado):
         resultado["alertas"].append(
             "Paciente com idade acima de 60 anos. Avaliar com cautela."
         )
+        resultado["codigos_alerta"].append("IDADE_ACIMA_60")
 
 
 def avaliar_caso(dados_avaliacao):
@@ -52,6 +53,7 @@ def avaliar_caso(dados_avaliacao):
         "alertas": [],
         "bloqueios": [],
         "codigos": [],
+        "codigos_alerta": [],
         "texto_base": ""
     }
 
