@@ -2,15 +2,14 @@
 # Versão inicial com regras básicas separadas
 
 def validar_idade_obrigatoria(dados_avaliacao, resultado):
-    def validar_tipo_idade(dados_avaliacao, resultado):
-        def validar_faixa_idade(dados_avaliacao, resultado):
-    idade = dados_avaliacao.get("idade")
-    if idade < 0 or idade > 120:
+    if "idade" not in dados_avaliacao:
         resultado["status"] = "bloqueado"
-        resultado["bloqueios"].append("Campo 'idade' fora da faixa válida (0 a 120).")
+        resultado["bloqueios"].append("Campo obrigatório 'idade' não informado.")
         return False
     return True
 
+
+def validar_tipo_idade(dados_avaliacao, resultado):
     idade = dados_avaliacao.get("idade")
     if not isinstance(idade, (int, float)):
         resultado["status"] = "bloqueado"
@@ -18,9 +17,12 @@ def validar_idade_obrigatoria(dados_avaliacao, resultado):
         return False
     return True
 
-    if "idade" not in dados_avaliacao:
+
+def validar_faixa_idade(dados_avaliacao, resultado):
+    idade = dados_avaliacao.get("idade")
+    if idade < 0 or idade > 120:
         resultado["status"] = "bloqueado"
-        resultado["bloqueios"].append("Campo obrigatório 'idade' não informado.")
+        resultado["bloqueios"].append("Campo 'idade' fora da faixa válida (0 a 120).")
         return False
     return True
 
@@ -51,14 +53,14 @@ def avaliar_caso(dados_avaliacao):
     # Validação obrigatória
     if not validar_idade_obrigatoria(dados_avaliacao, resultado):
         return resultado
-            # Validação de tipo
-        # Validação de faixa
-    if not validar_faixa_idade(dados_avaliacao, resultado):
-        return resultado
 
+    # Validação de tipo
     if not validar_tipo_idade(dados_avaliacao, resultado):
         return resultado
 
+    # Validação de faixa
+    if not validar_faixa_idade(dados_avaliacao, resultado):
+        return resultado
 
     # Regra de exclusão
     if not aplicar_exclusao_idade_minima(dados_avaliacao, resultado):
