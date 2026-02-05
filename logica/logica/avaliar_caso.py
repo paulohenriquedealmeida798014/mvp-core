@@ -1,11 +1,21 @@
 # Função central de avaliação de caso
-# Versão inicial com regras básicas separadas + códigos estruturados
+# Versão inicial com regras básicas separadas + códigos estruturados via catálogo
+
+from .codigos import (
+    IDADE_OBRIGATORIA_AUSENTE,
+    IDADE_TIPO_INVALIDO,
+    IDADE_FORA_FAIXA,
+    IDADE_MENOR_18,
+    IDADE_ACIMA_60,
+)
+
+VERSAO_PROTOCOLO = "1.0.0"
 
 def validar_idade_obrigatoria(dados_avaliacao, resultado):
     if "idade" not in dados_avaliacao:
         resultado["status"] = "bloqueado"
         resultado["bloqueios"].append("Campo obrigatório 'idade' não informado.")
-        resultado["codigos"].append("IDADE_OBRIGATORIA_AUSENTE")
+        resultado["codigos"].append(IDADE_OBRIGATORIA_AUSENTE)
         return False
     return True
 
@@ -15,7 +25,7 @@ def validar_tipo_idade(dados_avaliacao, resultado):
     if not isinstance(idade, (int, float)):
         resultado["status"] = "bloqueado"
         resultado["bloqueios"].append("Campo 'idade' deve ser numérico.")
-        resultado["codigos"].append("IDADE_TIPO_INVALIDO")
+        resultado["codigos"].append(IDADE_TIPO_INVALIDO)
         return False
     return True
 
@@ -25,7 +35,7 @@ def validar_faixa_idade(dados_avaliacao, resultado):
     if idade < 0 or idade > 120:
         resultado["status"] = "bloqueado"
         resultado["bloqueios"].append("Campo 'idade' fora da faixa válida (0 a 120).")
-        resultado["codigos"].append("IDADE_FORA_FAIXA")
+        resultado["codigos"].append(IDADE_FORA_FAIXA)
         return False
     return True
 
@@ -34,7 +44,7 @@ def aplicar_exclusao_idade_minima(dados_avaliacao, resultado):
     if dados_avaliacao.get("idade") < 18:
         resultado["status"] = "bloqueado"
         resultado["bloqueios"].append("Idade menor que 18 anos não permitida.")
-        resultado["codigos"].append("IDADE_MENOR_18")
+        resultado["codigos"].append(IDADE_MENOR_18)
         return False
     return True
 
@@ -44,11 +54,12 @@ def aplicar_alerta_idade_alta(dados_avaliacao, resultado):
         resultado["alertas"].append(
             "Paciente com idade acima de 60 anos. Avaliar com cautela."
         )
-        resultado["codigos_alerta"].append("IDADE_ACIMA_60")
+        resultado["codigos_alerta"].append(IDADE_ACIMA_60)
 
 
 def avaliar_caso(dados_avaliacao):
     resultado = {
+        "versao_protocolo": VERSAO_PROTOCOLO,
         "status": "ok",
         "alertas": [],
         "bloqueios": [],
