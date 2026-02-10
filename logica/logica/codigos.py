@@ -138,3 +138,52 @@ DATA_NASCIMENTO_INCONSISTENTE_COM_IDADE = "DATA_NASCIMENTO_INCONSISTENTE_COM_IDA
         resultado["texto_base"] = "Avaliação concluída sem alertas."
 
     return resultado
+
+# =========================
+# Catálogo de mensagens do core de avaliação
+# =========================
+
+# --- Idade ---
+MSG_IDADE_OBRIGATORIA_AUSENTE = "Campo obrigatório 'idade' não informado."
+MSG_IDADE_TIPO_INVALIDO = "Campo 'idade' deve ser numérico."
+MSG_IDADE_FORA_FAIXA = "Campo 'idade' fora da faixa válida (0 a 120)."
+MSG_IDADE_MENOR_18 = "Idade menor que 18 anos não permitida."
+MSG_ALERTA_IDADE_ACIMA_60 = "Paciente com idade acima de 60 anos. Avaliar com cautela."
+
+# --- Sexo ---
+MSG_SEXO_OBRIGATORIO_AUSENTE = "Campo obrigatório 'sexo' não informado."
+MSG_SEXO_TIPO_INVALIDO = "Campo 'sexo' deve ser uma string."
+MSG_SEXO_VALOR_INVALIDO = "Campo 'sexo' possui valor inválido."
+MSG_SEXO_GESTANTE_INCONSISTENTE = "Inconsistência entre 'sexo' e 'gestante'."
+
+# --- Gestante ---
+MSG_GESTANTE_TIPO_INVALIDO = "Campo 'gestante' deve ser booleano."
+MSG_GESTANTE_INCONSISTENTE_COM_SEXO = "Campo 'gestante' inconsistente com o valor de 'sexo'."
+MSG_ALERTA_GESTANTE_RISCO_ATIVO = "Gestação ativa requer atenção adicional."
+
+# --- Comorbidades ---
+MSG_COMORBIDADES_TIPO_INVALIDO = "Campo 'comorbidades' deve ser uma lista."
+MSG_COMORBIDADES_ITEM_TIPO_INVALIDO = "Itens de 'comorbidades' devem ser strings."
+MSG_ALERTA_COMORBIDADES_RISCO_PRESENTE = "Comorbidades informadas. Avaliar riscos associados."
+
+# --- Medicações ---
+MSG_MEDICACOES_TIPO_INVALIDO = "Campo 'medicacoes' deve ser uma lista."
+MSG_MEDICACOES_ITEM_TIPO_INVALIDO = "Itens de 'medicacoes' devem ser strings."
+MSG_ALERTA_MEDICACOES_INTERACAO_RISCO = "Medicações informadas. Avaliar possíveis interações."
+
+# --- Fototipo ---
+MSG_FOTOTIPO_OBRIGATORIO_AUSENTE = "Campo obrigatório 'fototipo' não informado."
+MSG_FOTOTIPO_TIPO_INVALIDO = "Campo 'fototipo' deve ser uma string."
+MSG_FOTOTIPO_VALOR_INVALIDO = "Campo 'fototipo' possui valor inválido."
+MSG_ALERTA_FOTOTIPO_RISCO_ELEVADO = "Fototipo de risco elevado. Avaliar com cautela."
+
+# --- Data de nascimento ---
+MSG_DATA_NASCIMENTO_OBRIGATORIA_AUSENTE = "Campo obrigatório 'data_nascimento' não informado."
+MSG_DATA_NASCIMENTO_TIPO_INVALIDO = "Campo 'data_nascimento' deve ser uma data válida."
+MSG_DATA_NASCIMENTO_VALOR_INVALIDO = "Campo 'data_nascimento' possui valor inválido."
+MSG_DATA_NASCIMENTO_INCONSISTENTE_COM_IDADE = "Data de nascimento inconsistente com a idade informada."
+
+# --- Textos base ---
+MSG_TEXTO_BASE_ALERTAS = "Avaliação concluída com alertas. Verifique os pontos de atenção."
+MSG_TEXTO_BASE_OK = "Avaliação concluída sem alertas."
+
